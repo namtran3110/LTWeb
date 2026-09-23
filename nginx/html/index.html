@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống IoT / Web App Ubuntu</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; display: inline-block; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        #result { margin-top: 20px; font-size: 18px; font-weight: bold; color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Bài thực hành Web + Node-RED Backend</h1>
+        <button onclick="getData()">Lấy dữ liệu từ Backend API</button>
+        <div id="result">Đang chờ bấm nút...</div>
+    </div>
+
+    <script>
+        function getData() {
+            // Gọi tới đường dẫn API /api/data thông qua Nginx Reverse Proxy
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    // Hiển thị giá trị trong JSON lên giao diện theo đúng yêu cầu bài học
+                    document.getElementById('result').innerText = "Nội dung JSON: " + data.message + " (Thời gian: " + data.time + ")";
+                })
+                .catch(error => {
+                    console.error('Lỗi gọi API:', error);
+                    document.getElementById('result').innerText = "Lỗi khi kết nối tới API!";
+                });
+        }
+    </script>
+</body>
+</html>

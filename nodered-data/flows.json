@@ -1,0 +1,59 @@
+[
+    {
+        "id": "26d771d24e70ef9a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5d2949a738f40701",
+        "type": "http in",
+        "z": "26d771d24e70ef9a",
+        "name": "",
+        "url": "/api/data",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 330,
+        "y": 580,
+        "wires": [
+            [
+                "9f90b2e52c3d8577"
+            ]
+        ]
+    },
+    {
+        "id": "9f90b2e52c3d8577",
+        "type": "function",
+        "z": "26d771d24e70ef9a",
+        "name": "function 1",
+        "func": "msg.payload = {\n    status: \"success\",\n    message: \"Ket noi Node-RED Backend thanh cong!\",\n    time: new Date().toLocaleTimeString()\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 580,
+        "wires": [
+            [
+                "7bcb6f412bdee621"
+            ]
+        ]
+    },
+    {
+        "id": "7bcb6f412bdee621",
+        "type": "http response",
+        "z": "26d771d24e70ef9a",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 790,
+        "y": 580,
+        "wires": []
+    }
+]
