@@ -1,13 +1,5 @@
 services:
-  nodered:
-    image: nodered/node-red:latest
-    container_name: nodered
-    restart: always
-    ports:
-      - "1880:1880"
-    volumes:
-      - ./nodered-data:/data
-
+  # 1. Nginx Web Server
   nginx:
     image: nginx:alpine
     container_name: nginx
@@ -15,13 +7,57 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx/html:/usr/share/nginx/html:ro
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - nodered
+      - phpmyadmin
 
-  cloudflare:
+  # 2. Node-RED Backend
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: always
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered_data:/data
+
+  # 3. MariaDB Database
+  mariadb:
+    image: mariadb:10.11
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 4. phpMyAdmin Database Management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - mariadb
+
+  # 5. Cloudflare Tunnel
+  cloudflared:
     image: cloudflare/cloudflared:latest
-    container_name: cloudflare
+    container_name: cloudflared
     restart: always
     command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+
+volumes:
+  nodered_data:
+  db_data:
