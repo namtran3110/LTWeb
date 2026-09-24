@@ -1,0 +1,4 @@
+.env
+nodered-data/
+*.save
+*.save.*
