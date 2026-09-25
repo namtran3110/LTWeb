@@ -2,35 +2,85 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Web App Ubuntu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bảng Điểm - Bài Tập 2</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
-        .card { background: white; padding: 20px; border-radius: 8px; display: inline-block; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-        #result { margin-top: 20px; font-size: 18px; font-weight: bold; color: #28a745; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #eef2f5; }
+        .card { max-width: 700px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin: 0 auto; }
+        h2 { color: #1a365d; border-bottom: 2px solid #3182ce; padding-bottom: 10px; margin-top: 0; }
+        button { background-color: #3182ce; color: white; border: none; padding: 11px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s; }
+        button:hover { background-color: #2b6cb0; }
+        #msg { margin-top: 15px; font-weight: bold; color: #2d3748; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
+        th { background-color: #3182ce; color: white; }
+        tr:nth-child(even) { background-color: #f7fafc; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Bài thực hành Web + Node-RED Backend</h1>
-        <button onclick="getData()">Lấy dữ liệu từ Backend API</button>
-        <div id="result">Đang chờ bấm nút...</div>
-    </div>
 
-    <script>
-        function getData() {
-            // Gọi tới đường dẫn API /api/data thông qua Nginx Reverse Proxy
-            fetch('/api/data')
-                .then(response => response.json())
-                .then(data => {
-                    // Hiển thị giá trị trong JSON lên giao diện theo đúng yêu cầu bài học
-                    document.getElementById('result').innerText = "Nội dung JSON: " + data.message + " (Thời gian: " + data.time + ")";
-                })
-                .catch(error => {
-                    console.error('Lỗi gọi API:', error);
-                    document.getElementById('result').innerText = "Lỗi khi kết nối tới API!";
-                });
+<div class="card">
+    <h2>Hệ Thống Tra Cứu Bảng Điểm</h2>
+    <button onclick="taiBangDiem()">Tải Bảng Điểm Mới Nhất</button>
+    
+    <p id="msg"></p>
+
+    <table id="bangDiemTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã SV</th>
+                <th>Họ và Tên</th>
+                <th>Điểm Quá Trình</th>
+                <th>Điểm Thi</th>
+            </tr>
+        </thead>
+        <tbody id="theDiemBody"></tbody>
+    </table>
+</div>
+
+<script>
+async function taiBangDiem() {
+    const msg = document.getElementById('msg');
+    const table = document.getElementById('bangDiemTable');
+    const tbody = document.getElementById('theDiemBody');
+
+    msg.innerText = "Đang kết nối API...";
+    msg.style.color = "#d69e2e";
+
+    try {
+        // Gọi API mới /api/bangdiem
+        const res = await fetch('/api/bangdiem');
+        const data = await res.json();
+
+        if (data.status === "success") {
+            msg.innerText = `${data.message} - Môn: ${data.mon_hoc}`;
+            msg.style.color = "#38a169";
+            tbody.innerHTML = "";
+
+            data.danh_sach.forEach(sv => {
+                const row = `<tr>
+                    <td>${sv.stt}</td>
+                    <td><b>${sv.masv}</b></td>
+                    <td style="text-align: left;">${sv.ho_ten}</td>
+                    <td>${sv.diem_qt}</td>
+                    <td>${sv.diem_thi}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            table.style.display = "table";
+        } else {
+            msg.innerText = "Không thể lấy dữ liệu!";
+            msg.style.color = "#e53e3e";
         }
-    </script>
+    } catch (err) {
+        console.error("Lỗi:", err);
+        msg.innerText = "Lỗi kết nối tới Server API!";
+        msg.style.color = "#e53e3e";
+    }
+}
+</script>
+
 </body>
 </html>
