@@ -2,7 +2,7 @@
 
 * **Họ và tên:** Trần Nhất Nam
 * **Lớp:** 59KMT
-* * **Mã sinh viên:** K235480106001
+* **Mã sinh viên:** K235480106001
 ---
 
 ## 1. Môi trường Giả lập & Containerization
