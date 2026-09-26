@@ -1,9 +1,8 @@
 # BÁO CÁO BÀI TẬP 1 - LẬP TRÌNH WEB
 
 * **Họ và tên:** Trần Nhất Nam
-* **Mã sinh viên:** 59KMT
-* **Repository GitHub:** https://github.com/namtran3110/Myapp
-
+* **Lớp:** 59KMT
+* * **Mã sinh viên:** K235480106001
 ---
 
 ## 1. Môi trường Giả lập & Containerization
