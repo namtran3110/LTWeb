@@ -1,4 +1,4 @@
-# MÔN HỌC: LẬP TRÌNH WEB
+# MÔN HỌC: PHÁT TRIỂN ỨNG DỤNG TRÊN NỀN WEB
 ## Họ và tên: TRẦN NHẤT NAM
 ## MSSV: K235480106001
 ## Lớp: K59KMT
