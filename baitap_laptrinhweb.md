@@ -5,7 +5,7 @@
 
 ---
 
-### BÀI 1 - LẬP TRÌNH WEB
+### BÀI 1:
 1. Môi trường Giả lập & Containerization
 * **Môi trường:** Máy ảo Ubuntu Linux (VMware / VirtualBox)
 * **Công nghệ:** Docker & Docker Compose v2
@@ -43,7 +43,9 @@ LTWeb/
 ### BÀI 2:
 1. sử dụng nodered: dùng node http_in + http_response => tạo api đơn giản
 <img width="956" height="541" alt="image" src="https://github.com/user-attachments/assets/e16b7430-27b7-42f5-b651-b130a0b971c4" />
+
 Chương trình khối template:
+
 ```
 {
   "status": "success",
